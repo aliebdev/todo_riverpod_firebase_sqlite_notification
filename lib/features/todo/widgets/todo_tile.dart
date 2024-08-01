@@ -53,7 +53,7 @@ class TodoTile extends StatelessWidget {
                       width: 5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Constants.kRadius),
-                        color: Constants.kRed,
+                        color: color,
                       ),
                     ),
                     const WidthSpacer(15),

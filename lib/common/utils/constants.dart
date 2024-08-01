@@ -19,3 +19,11 @@ class Constants {
   static double kHeight = 825.h;
   static double kRadius = 12.h;
 }
+
+List<dynamic> colors = [
+  const Color(0xFFd00000),
+  const Color(0xFF027eb5),
+  const Color(0xFF20a31E),
+  const Color(0xFFF9F900),
+  const Color(0xFF79017B),
+];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/todo/controllers/todo/todo_provider.dart';
 import '../utils/constants.dart';
 import 'app_style.dart';
 import 'reusable_text.dart';
@@ -29,6 +30,8 @@ class BottomTitles extends StatelessWidget {
           children: [
             Consumer(
               builder: (context, ref, child) {
+                final color =
+                    ref.read(todoStateProvider.notifier).getRandomColor();
                 return Container(
                   height: 80,
                   width: 5,

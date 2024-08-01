@@ -13,15 +13,15 @@ class TaskModel {
   final String? repeat;
 
   TaskModel({
-    required this.id,
-    required this.title,
-    required this.desc,
-    required this.isCompleted,
-    required this.date,
-    required this.startTime,
-    required this.endTime,
-    required this.remind,
-    required this.repeat,
+    this.id,
+    this.title,
+    this.desc,
+    this.isCompleted,
+    this.date,
+    this.startTime,
+    this.endTime,
+    this.remind,
+    this.repeat,
   });
 
   TaskModel copyWith({

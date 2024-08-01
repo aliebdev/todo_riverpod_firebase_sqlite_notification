@@ -8,8 +8,12 @@ import '../../../common/widgets/app_style.dart';
 import '../../../common/widgets/custom_text_field.dart';
 import '../../../common/widgets/reusable_text.dart';
 import '../../../common/widgets/spacers.dart';
-import '../../../common/widgets/xpansion_tile.dart';
-import '../widgets/todo_tile.dart';
+import '../controllers/todo/todo_provider.dart';
+import '../widgets/completed_tasks.dart';
+import '../widgets/day_after_tomorrow.dart';
+import '../widgets/today_tasks.dart';
+import '../widgets/tomorrow_list.dart';
+import 'add_task_page.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -34,6 +38,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(todoStateProvider.notifier).refresh();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -60,7 +65,14 @@ class _HomePageState extends ConsumerState<HomePage>
                         borderRadius: BorderRadius.circular(Constants.kRadius),
                       ),
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddTaskPage(),
+                            ),
+                          );
+                        },
                         child: const Icon(
                           Icons.add,
                           color: Constants.kBkDark,
@@ -129,10 +141,9 @@ class _HomePageState extends ConsumerState<HomePage>
                   controller: tabController,
                   labelPadding: EdgeInsets.zero,
                   isScrollable: false,
-                  labelColor: Constants.kBlueLight,
-                  labelStyle:
-                      appStyle(24, Constants.kBlueLight, FontWeight.w700),
-                  unselectedLabelColor: Constants.kLight,
+                  // labelColor: Constants.kBlueLight,
+                  labelStyle: appStyle(24, Constants.kLight, FontWeight.w700),
+                  unselectedLabelColor: Constants.kBkDark,
                   indicatorSize: TabBarIndicatorSize.label,
                   indicator: BoxDecoration(
                     color: Constants.kGreyLight,
@@ -147,7 +158,7 @@ class _HomePageState extends ConsumerState<HomePage>
                             text: "Pending",
                             style: appStyle(
                               16,
-                              Constants.kBkDark,
+                              null,
                               FontWeight.bold,
                             ),
                           ),
@@ -163,7 +174,7 @@ class _HomePageState extends ConsumerState<HomePage>
                             text: "Complete",
                             style: appStyle(
                               16,
-                              Constants.kBkDark,
+                              null,
                               FontWeight.bold,
                             ),
                           ),
@@ -185,42 +196,21 @@ class _HomePageState extends ConsumerState<HomePage>
                       Container(
                         color: Constants.kBkLight,
                         height: Constants.kHeight * .3,
-                        child: ListView(
-                          children: [
-                            TodoTile(
-                              start: "03:00",
-                              end: "05:00",
-                              switcher: Switch(
-                                value: true,
-                                onChanged: (value) {},
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: const TodayTasks(),
                       ),
                       Container(
                         color: Constants.kBkLight,
                         height: Constants.kHeight * .3,
+                        child: const CompletedTasks(),
                       ),
                     ],
                   ),
                 ),
               ),
               const HeightSpacer(20),
-              const XpansionTile(
-                text: "Tomorrow's Task",
-                text2: "Tomorrow's tasks are shown here",
-                children: [],
-              ),
+              const TomorrowList(),
               const HeightSpacer(20),
-              XpansionTile(
-                text: DateTime.now()
-                    .add(const Duration(days: 2))
-                    .toString()
-                    .substring(5, 10),
-                text2: "Day after tomorrow tasks",
-                children: const [],
-              ),
+              const DayAfterTomorrow(),
             ],
           ),
         ),

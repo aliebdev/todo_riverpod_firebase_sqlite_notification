@@ -16,7 +16,7 @@ class XpansionTile extends StatelessWidget {
 
   final String text;
   final String text2;
-  final void Function(bool)? onExpansionChanged;
+  final void Function(bool expaned)? onExpansionChanged;
   final Widget? trailing;
   final List<Widget> children;
 
