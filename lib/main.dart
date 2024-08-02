@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo/common/routes/routes.dart';
 import 'package:todo/features/auth/controllers/user_controller.dart';
 import 'package:todo/features/onboarding/pages/on_boarding_page.dart';
+import 'package:todo/features/todo/pages/home_page.dart';
 import 'package:todo/firebase_options.dart';
 
 import 'common/utils/constants.dart';
-import 'features/todo/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

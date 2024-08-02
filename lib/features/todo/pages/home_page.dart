@@ -24,11 +24,11 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with TickerProviderStateMixin {
+  final search = TextEditingController();
   late final TabController tabController = TabController(
     length: 2,
     vsync: this,
   );
-  final search = TextEditingController();
 
   @override
   void dispose() {

@@ -8,6 +8,7 @@ import 'package:todo/common/models/task_model.dart';
 import 'package:todo/features/todo/controllers/dates/dates_provider.dart';
 import 'package:todo/features/todo/controllers/todo/todo_provider.dart';
 
+import '../../../common/helpers/notification_helper.dart';
 import '../../../common/utils/constants.dart';
 import '../../../common/widgets/app_style.dart';
 import '../../../common/widgets/custom_text_field.dart';
@@ -30,16 +31,21 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
   late TextEditingController titleController;
   late TextEditingController descController;
 
+  List<int> notification = [];
+  late NotificationsHelper notifierHelper;
+  late NotificationsHelper controller;
+
   @override
   void initState() {
     super.initState();
     titleController = TextEditingController(text: widget.task?.title);
     descController = TextEditingController(text: widget.task?.desc);
-    // if (widget.task != null) {
-    //   ref
-    //       .read(dateStateProvider.notifier)
-    //       .setStart(widget.task!.date!.substring(0, 10));
-    // }
+
+    notifierHelper = NotificationsHelper(ref);
+    Future.delayed(Duration.zero, () {
+      controller = NotificationsHelper(ref);
+    });
+    notifierHelper.init();
   }
 
   @override
@@ -124,6 +130,9 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                         ref
                             .read(startTimeStateProvider.notifier)
                             .setStart(date.toString());
+                        notification = ref
+                            .read(startTimeStateProvider.notifier)
+                            .dates(date);
                       },
                     );
                   },
@@ -177,9 +186,16 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                   } else {
                     ref.read(todoStateProvider.notifier).updateItem(newTask);
                   }
-                  ref.read(finishTimeStateProvider.notifier).setStart('');
-                  ref.read(startTimeStateProvider.notifier).setStart('');
-                  ref.read(dateStateProvider.notifier).setStart('');
+                  notifierHelper.scheduleNotification(
+                    notification[0],
+                    notification[1],
+                    notification[2],
+                    notification[3],
+                    newTask,
+                  );
+                  // ref.read(finishTimeStateProvider.notifier).setStart('');
+                  // ref.read(startTimeStateProvider.notifier).setStart('');
+                  // ref.read(dateStateProvider.notifier).setStart('');
                   Navigator.pop(context);
                 } else {}
               },
