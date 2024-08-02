@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
@@ -14,15 +15,39 @@ import '../../../common/widgets/spacers.dart';
 import '../../onboarding/widgets/custom_otn_button.dart';
 
 class AddTaskPage extends ConsumerStatefulWidget {
-  const AddTaskPage({super.key});
+  const AddTaskPage({
+    super.key,
+    this.task,
+  });
+
+  final TaskModel? task;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddTaskPageState();
 }
 
 class _AddTaskPageState extends ConsumerState<AddTaskPage> {
-  final TextEditingController title = TextEditingController();
-  final TextEditingController desc = TextEditingController();
+  late TextEditingController titleController;
+  late TextEditingController descController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.task?.title);
+    descController = TextEditingController(text: widget.task?.desc);
+    // if (widget.task != null) {
+    //   ref
+    //       .read(dateStateProvider.notifier)
+    //       .setStart(widget.task!.date!.substring(0, 10));
+    // }
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +65,13 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
           children: [
             const HeightSpacer(20),
             CustomTextField(
-              controller: title,
+              controller: titleController,
               hintText: "Add title",
               hintStyle: appStyle(16, Constants.kGreyLight, FontWeight.w600),
             ),
             const HeightSpacer(20),
             CustomTextField(
-              controller: desc,
+              controller: descController,
               hintText: "Add description",
               hintStyle: appStyle(16, Constants.kGreyLight, FontWeight.w600),
             ),
@@ -131,14 +156,15 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
               color: Constants.kLight,
               backgroundColor: Constants.kGreen,
               onTap: () {
-                if (title.text.isNotEmpty &&
-                    desc.text.isNotEmpty &&
+                if (titleController.text.isNotEmpty &&
+                    descController.text.isNotEmpty &&
                     scheduleDate.isNotEmpty &&
                     startTime.isNotEmpty &&
                     endTime.isNotEmpty) {
-                  TaskModel task = TaskModel(
-                    title: title.text,
-                    desc: desc.text,
+                  final TaskModel newTask = TaskModel(
+                    id: widget.task?.id,
+                    title: titleController.text,
+                    desc: descController.text,
                     isCompleted: 0,
                     date: scheduleDate,
                     startTime: startTime.substring(10, 16),
@@ -146,7 +172,11 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     remind: 0,
                     repeat: "yes",
                   );
-                  ref.read(todoStateProvider.notifier).addItem(task);
+                  if (widget.task == null) {
+                    ref.read(todoStateProvider.notifier).addItem(newTask);
+                  } else {
+                    ref.read(todoStateProvider.notifier).updateItem(newTask);
+                  }
                   ref.read(finishTimeStateProvider.notifier).setStart('');
                   ref.read(startTimeStateProvider.notifier).setStart('');
                   ref.read(dateStateProvider.notifier).setStart('');

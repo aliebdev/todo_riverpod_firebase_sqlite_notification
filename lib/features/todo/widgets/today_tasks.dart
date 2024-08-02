@@ -4,6 +4,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 import '../../../common/models/task_model.dart';
 import '../controllers/todo/todo_provider.dart';
+import '../pages/add_task_page.dart';
 import 'todo_tile.dart';
 
 class TodayTasks extends ConsumerWidget {
@@ -45,7 +46,14 @@ class TodayTasks extends ConsumerWidget {
             ref.read(todoStateProvider.notifier).deleteTodo(data.id ?? 0);
           },
           editWidget: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddTaskPage(task: data),
+                ),
+              );
+            },
             child: const Icon(
               MaterialCommunityIcons.circle_edit_outline,
             ),

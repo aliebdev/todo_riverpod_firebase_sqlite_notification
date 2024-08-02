@@ -1,16 +1,25 @@
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo/common/routes/routes.dart';
+import 'package:todo/features/auth/controllers/user_controller.dart';
+import 'package:todo/features/onboarding/pages/on_boarding_page.dart';
+import 'package:todo/firebase_options.dart';
 
 import 'common/utils/constants.dart';
 import 'features/todo/pages/home_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const ProviderScope(child: MainApp()));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   static final defaultLightColorScheme =
@@ -22,7 +31,9 @@ class MainApp extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(userProvider.notifier).refresh();
+    final users = ref.watch(userProvider);
     return ScreenUtilInit(
       useInheritedMediaQuery: true,
       designSize: const Size(375, 825),
@@ -44,7 +55,8 @@ class MainApp extends StatelessWidget {
               useMaterial3: true,
             ),
             themeMode: ThemeMode.dark,
-            home: const HomePage(),
+            home: users.isEmpty ? const OnBoardingPage() : const HomePage(),
+            onGenerateRoute: Routes.onGenerateRoute,
           );
         });
       },

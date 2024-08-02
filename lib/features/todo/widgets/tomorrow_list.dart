@@ -6,6 +6,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import '../../../common/widgets/xpansion_tile.dart';
 import '../controllers/todo/todo_provider.dart';
 import '../controllers/xpansion_provider.dart';
+import '../pages/add_task_page.dart';
 import 'todo_tile.dart';
 
 class TomorrowList extends ConsumerWidget {
@@ -47,7 +48,14 @@ class TomorrowList extends ConsumerWidget {
             start: todo.startTime,
             end: todo.endTime,
             editWidget: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddTaskPage(task: todo),
+                  ),
+                );
+              },
               child: const Icon(MaterialCommunityIcons.circle_edit_outline),
             ),
             delete: () {

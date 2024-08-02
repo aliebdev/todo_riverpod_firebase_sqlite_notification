@@ -58,6 +58,11 @@ class DBHelper {
     return id;
   }
 
+  static Future<List<Map<String, dynamic>>> getUsers() async {
+    final db = await DBHelper.db();
+    return db.query('user', orderBy: 'id');
+  }
+
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await DBHelper.db();
     return db.query('todos', orderBy: 'id');
@@ -71,14 +76,7 @@ class DBHelper {
   static Future<int> updateItem(TaskModel task) async {
     final db = await DBHelper.db();
 
-    // final data = {
-    //   "title": title,
-    //   "desc": desc,
-    //   "isCompleted": isCompleted,
-    //   'date': date,
-    //   'startTime': startTime,
-    //   'endTime': endTime,
-    // };
+    print(task.toMap());
 
     final results = await db.update(
       'todos',

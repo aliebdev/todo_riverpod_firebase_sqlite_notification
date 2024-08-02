@@ -107,112 +107,110 @@ class _HomePageState extends ConsumerState<HomePage>
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: ListView(
-            children: [
-              const HeightSpacer(25),
-              Row(
-                children: [
-                  const Icon(
-                    FontAwesome.tasks,
-                    size: 20,
-                    color: Constants.kLight,
+        child: ListView(
+          padding: EdgeInsets.all(20.w),
+          children: [
+            // const HeightSpacer(25),
+            Row(
+              children: [
+                const Icon(
+                  FontAwesome.tasks,
+                  size: 20,
+                  color: Constants.kLight,
+                ),
+                // const WidthSpacer(20),
+                const SizedBox(width: 10),
+                ReusableText(
+                  text: "Today's Task",
+                  style: appStyle(
+                    18,
+                    Constants.kLight,
+                    FontWeight.bold,
                   ),
-                  // const WidthSpacer(20),
-                  const SizedBox(width: 10),
-                  ReusableText(
-                    text: "Today's Task",
-                    style: appStyle(
-                      18,
-                      Constants.kLight,
-                      FontWeight.bold,
+                ),
+              ],
+            ),
+            const HeightSpacer(25),
+            Container(
+              decoration: BoxDecoration(
+                color: Constants.kLight,
+                borderRadius: BorderRadius.circular(Constants.kRadius),
+              ),
+              child: TabBar(
+                controller: tabController,
+                labelPadding: EdgeInsets.zero,
+                isScrollable: false,
+                // labelColor: Constants.kBlueLight,
+                labelStyle: appStyle(24, Constants.kLight, FontWeight.w700),
+                unselectedLabelColor: Constants.kBkDark,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicator: BoxDecoration(
+                  color: Constants.kGreyLight,
+                  borderRadius: BorderRadius.circular(Constants.kRadius),
+                ),
+                tabs: [
+                  Tab(
+                    child: SizedBox(
+                      width: Constants.kWidth * .5,
+                      child: Center(
+                        child: ReusableText(
+                          text: "Pending",
+                          style: appStyle(
+                            16,
+                            null,
+                            FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 30.h),
+                      width: Constants.kWidth * .5,
+                      child: Center(
+                        child: ReusableText(
+                          text: "Complete",
+                          style: appStyle(
+                            16,
+                            null,
+                            FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const HeightSpacer(25),
-              Container(
-                decoration: BoxDecoration(
-                  color: Constants.kLight,
-                  borderRadius: BorderRadius.circular(Constants.kRadius),
-                ),
-                child: TabBar(
+            ),
+            const HeightSpacer(20),
+            SizedBox(
+              height: Constants.kHeight * .3,
+              width: Constants.kWidth,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(Constants.kRadius),
+                child: TabBarView(
                   controller: tabController,
-                  labelPadding: EdgeInsets.zero,
-                  isScrollable: false,
-                  // labelColor: Constants.kBlueLight,
-                  labelStyle: appStyle(24, Constants.kLight, FontWeight.w700),
-                  unselectedLabelColor: Constants.kBkDark,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicator: BoxDecoration(
-                    color: Constants.kGreyLight,
-                    borderRadius: BorderRadius.circular(Constants.kRadius),
-                  ),
-                  tabs: [
-                    Tab(
-                      child: SizedBox(
-                        width: Constants.kWidth * .5,
-                        child: Center(
-                          child: ReusableText(
-                            text: "Pending",
-                            style: appStyle(
-                              16,
-                              null,
-                              FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                  children: [
+                    Container(
+                      color: Constants.kBkLight,
+                      height: Constants.kHeight * .3,
+                      child: const TodayTasks(),
                     ),
-                    Tab(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 30.h),
-                        width: Constants.kWidth * .5,
-                        child: Center(
-                          child: ReusableText(
-                            text: "Complete",
-                            style: appStyle(
-                              16,
-                              null,
-                              FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                    Container(
+                      color: Constants.kBkLight,
+                      height: Constants.kHeight * .3,
+                      child: const CompletedTasks(),
                     ),
                   ],
                 ),
               ),
-              const HeightSpacer(20),
-              SizedBox(
-                height: Constants.kHeight * .3,
-                width: Constants.kWidth,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(Constants.kRadius),
-                  child: TabBarView(
-                    controller: tabController,
-                    children: [
-                      Container(
-                        color: Constants.kBkLight,
-                        height: Constants.kHeight * .3,
-                        child: const TodayTasks(),
-                      ),
-                      Container(
-                        color: Constants.kBkLight,
-                        height: Constants.kHeight * .3,
-                        child: const CompletedTasks(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const HeightSpacer(20),
-              const TomorrowList(),
-              const HeightSpacer(20),
-              const DayAfterTomorrow(),
-            ],
-          ),
+            ),
+            const HeightSpacer(20),
+            const TomorrowList(),
+            const HeightSpacer(20),
+            const DayAfterTomorrow(),
+          ],
         ),
       ),
     );

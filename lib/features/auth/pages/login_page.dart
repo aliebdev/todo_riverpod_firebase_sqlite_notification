@@ -2,6 +2,8 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo/common/widgets/show_dialog.dart';
+import 'package:todo/features/auth/controllers/auth_controller.dart';
 
 import '../../../common/utils/constants.dart';
 import '../../../common/widgets/app_style.dart';
@@ -9,7 +11,6 @@ import '../../../common/widgets/custom_text_field.dart';
 import '../../../common/widgets/reusable_text.dart';
 import '../../../common/widgets/spacers.dart';
 import '../../onboarding/widgets/custom_otn_button.dart';
-import 'otp_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -33,6 +34,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     displayNameNoCountryCode: "US",
     e164Key: "",
   );
+
+  sendCodeToUser() {
+    if (phone.text.isEmpty) {
+      return showAlertDialog(context,
+          message: "Please enter your phone number");
+    } else if (phone.text.length < 8) {
+      return showAlertDialog(context, message: "Your number is too short");
+    } else {
+      print("${country.phoneCode}${phone.text}");
+      ref
+          .read(authControllerProvider)
+          .sendSms(context, phone: "+${country.phoneCode}${phone.text}");
+    }
+  }
 
   @override
   void dispose() {
@@ -79,7 +94,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         showCountryPicker(
                           context: context,
                           countryListTheme: CountryListThemeData(
-                            backgroundColor: Constants.kLight,
+                            backgroundColor: Constants.kGreyLight,
                             bottomSheetHeight: Constants.kHeight * .6,
                             // textStyle: ,
                             borderRadius: BorderRadius.only(
@@ -114,12 +129,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 padding: const EdgeInsets.all(10),
                 child: CustomOtnButton(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const OtpPage(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const OtpPage(),
+                    //   ),
+                    // );
+                    sendCodeToUser();
                   },
                   text: "Send Code",
                   width: Constants.kWidth * .9,
